@@ -1,0 +1,564 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		A65D6D4B2E492DA9003B18FA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A65D6D272E492DA6003B18FA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A65D6D2E2E492DA6003B18FA;
+			remoteInfo = MentalMathArithmetic;
+		};
+		A65D6D552E492DA9003B18FA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A65D6D272E492DA6003B18FA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A65D6D2E2E492DA6003B18FA;
+			remoteInfo = MentalMathArithmetic;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A65D6D2F2E492DA6003B18FA /* MentalMathArithmetic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MentalMathArithmetic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A65D6D4A2E492DA9003B18FA /* MentalMathArithmeticTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MentalMathArithmeticTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A65D6D542E492DA9003B18FA /* MentalMathArithmeticUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MentalMathArithmeticUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A65D6D5C2E492DA9003B18FA /* Exceptions for "MentalMathArithmetic" folder in "MentalMathArithmetic" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A65D6D2E2E492DA6003B18FA /* MentalMathArithmetic */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A65D6D312E492DA6003B18FA /* MentalMathArithmetic */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A65D6D5C2E492DA9003B18FA /* Exceptions for "MentalMathArithmetic" folder in "MentalMathArithmetic" target */,
+			);
+			path = MentalMathArithmetic;
+			sourceTree = "<group>";
+		};
+		A65D6D4D2E492DA9003B18FA /* MentalMathArithmeticTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MentalMathArithmeticTests;
+			sourceTree = "<group>";
+		};
+		A65D6D572E492DA9003B18FA /* MentalMathArithmeticUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MentalMathArithmeticUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A65D6D2C2E492DA6003B18FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A65D6D472E492DA9003B18FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A65D6D512E492DA9003B18FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A65D6D262E492DA6003B18FA = {
+			isa = PBXGroup;
+			children = (
+				A65D6D312E492DA6003B18FA /* MentalMathArithmetic */,
+				A65D6D4D2E492DA9003B18FA /* MentalMathArithmeticTests */,
+				A65D6D572E492DA9003B18FA /* MentalMathArithmeticUITests */,
+				A65D6D302E492DA6003B18FA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A65D6D302E492DA6003B18FA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A65D6D2F2E492DA6003B18FA /* MentalMathArithmetic.app */,
+				A65D6D4A2E492DA9003B18FA /* MentalMathArithmeticTests.xctest */,
+				A65D6D542E492DA9003B18FA /* MentalMathArithmeticUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A65D6D2E2E492DA6003B18FA /* MentalMathArithmetic */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A65D6D5D2E492DA9003B18FA /* Build configuration list for PBXNativeTarget "MentalMathArithmetic" */;
+			buildPhases = (
+				A65D6D2B2E492DA6003B18FA /* Sources */,
+				A65D6D2C2E492DA6003B18FA /* Frameworks */,
+				A65D6D2D2E492DA6003B18FA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A65D6D312E492DA6003B18FA /* MentalMathArithmetic */,
+			);
+			name = MentalMathArithmetic;
+			packageProductDependencies = (
+			);
+			productName = MentalMathArithmetic;
+			productReference = A65D6D2F2E492DA6003B18FA /* MentalMathArithmetic.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A65D6D492E492DA9003B18FA /* MentalMathArithmeticTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A65D6D622E492DA9003B18FA /* Build configuration list for PBXNativeTarget "MentalMathArithmeticTests" */;
+			buildPhases = (
+				A65D6D462E492DA9003B18FA /* Sources */,
+				A65D6D472E492DA9003B18FA /* Frameworks */,
+				A65D6D482E492DA9003B18FA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A65D6D4C2E492DA9003B18FA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A65D6D4D2E492DA9003B18FA /* MentalMathArithmeticTests */,
+			);
+			name = MentalMathArithmeticTests;
+			packageProductDependencies = (
+			);
+			productName = MentalMathArithmeticTests;
+			productReference = A65D6D4A2E492DA9003B18FA /* MentalMathArithmeticTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A65D6D532E492DA9003B18FA /* MentalMathArithmeticUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A65D6D652E492DA9003B18FA /* Build configuration list for PBXNativeTarget "MentalMathArithmeticUITests" */;
+			buildPhases = (
+				A65D6D502E492DA9003B18FA /* Sources */,
+				A65D6D512E492DA9003B18FA /* Frameworks */,
+				A65D6D522E492DA9003B18FA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A65D6D562E492DA9003B18FA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A65D6D572E492DA9003B18FA /* MentalMathArithmeticUITests */,
+			);
+			name = MentalMathArithmeticUITests;
+			packageProductDependencies = (
+			);
+			productName = MentalMathArithmeticUITests;
+			productReference = A65D6D542E492DA9003B18FA /* MentalMathArithmeticUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A65D6D272E492DA6003B18FA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					A65D6D2E2E492DA6003B18FA = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					A65D6D492E492DA9003B18FA = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = A65D6D2E2E492DA6003B18FA;
+					};
+					A65D6D532E492DA9003B18FA = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = A65D6D2E2E492DA6003B18FA;
+					};
+				};
+			};
+			buildConfigurationList = A65D6D2A2E492DA6003B18FA /* Build configuration list for PBXProject "MentalMathArithmetic" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A65D6D262E492DA6003B18FA;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A65D6D302E492DA6003B18FA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A65D6D2E2E492DA6003B18FA /* MentalMathArithmetic */,
+				A65D6D492E492DA9003B18FA /* MentalMathArithmeticTests */,
+				A65D6D532E492DA9003B18FA /* MentalMathArithmeticUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A65D6D2D2E492DA6003B18FA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A65D6D482E492DA9003B18FA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A65D6D522E492DA9003B18FA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A65D6D2B2E492DA6003B18FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A65D6D462E492DA9003B18FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A65D6D502E492DA9003B18FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A65D6D4C2E492DA9003B18FA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A65D6D2E2E492DA6003B18FA /* MentalMathArithmetic */;
+			targetProxy = A65D6D4B2E492DA9003B18FA /* PBXContainerItemProxy */;
+		};
+		A65D6D562E492DA9003B18FA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A65D6D2E2E492DA6003B18FA /* MentalMathArithmetic */;
+			targetProxy = A65D6D552E492DA9003B18FA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A65D6D5E2E492DA9003B18FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5LSQ3C9W8U;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MentalMathArithmetic/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrezkys.MentalMathArithmetic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A65D6D5F2E492DA9003B18FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5LSQ3C9W8U;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MentalMathArithmetic/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrezkys.MentalMathArithmetic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A65D6D602E492DA9003B18FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		A65D6D612E492DA9003B18FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A65D6D632E492DA9003B18FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5LSQ3C9W8U;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrezkys.MentalMathArithmeticTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MentalMathArithmetic.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MentalMathArithmetic";
+			};
+			name = Debug;
+		};
+		A65D6D642E492DA9003B18FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5LSQ3C9W8U;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrezkys.MentalMathArithmeticTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MentalMathArithmetic.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MentalMathArithmetic";
+			};
+			name = Release;
+		};
+		A65D6D662E492DA9003B18FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5LSQ3C9W8U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrezkys.MentalMathArithmeticUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MentalMathArithmetic;
+			};
+			name = Debug;
+		};
+		A65D6D672E492DA9003B18FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5LSQ3C9W8U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrezkys.MentalMathArithmeticUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MentalMathArithmetic;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A65D6D2A2E492DA6003B18FA /* Build configuration list for PBXProject "MentalMathArithmetic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A65D6D602E492DA9003B18FA /* Debug */,
+				A65D6D612E492DA9003B18FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A65D6D5D2E492DA9003B18FA /* Build configuration list for PBXNativeTarget "MentalMathArithmetic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A65D6D5E2E492DA9003B18FA /* Debug */,
+				A65D6D5F2E492DA9003B18FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A65D6D622E492DA9003B18FA /* Build configuration list for PBXNativeTarget "MentalMathArithmeticTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A65D6D632E492DA9003B18FA /* Debug */,
+				A65D6D642E492DA9003B18FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A65D6D652E492DA9003B18FA /* Build configuration list for PBXNativeTarget "MentalMathArithmeticUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A65D6D662E492DA9003B18FA /* Debug */,
+				A65D6D672E492DA9003B18FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A65D6D272E492DA6003B18FA /* Project object */;
+}
