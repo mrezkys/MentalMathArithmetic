@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "bookIllustration.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
