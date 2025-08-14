@@ -33,7 +33,7 @@
 		A65D6D5C2E492DA9003B18FA /* Exceptions for "MentalMathArithmetic" folder in "MentalMathArithmetic" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				App/Info.plist,
+				Info.plist,
 			);
 			target = A65D6D2E2E492DA6003B18FA /* MentalMathArithmetic */;
 		};
