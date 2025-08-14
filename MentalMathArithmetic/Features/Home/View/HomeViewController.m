@@ -6,6 +6,7 @@
 //
 
 #import "HomeViewController.h"
+#import "UIColor+Theme.h"
 
 @interface HomeViewController ()
 
@@ -57,7 +58,7 @@
     if(!_startGameButton) {
         _startGameButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [_startGameButton setTitle:@"Start Game" forState:UIControlStateNormal];
-        _startGameButton.backgroundColor = [UIColor colorWithRed:0.22 green:0.60 blue:0.84 alpha:1.0]; // hex #3799D6
+        _startGameButton.backgroundColor = [UIColor primaryBlue];
         
         _startGameButton.titleLabel.font = [UIFont boldSystemFontOfSize:24];
 
@@ -84,7 +85,7 @@
             _learnButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
         }
         
-        _learnButton.backgroundColor = [UIColor colorWithRed:0.192 green:0.671 blue:0.271 alpha:1.0];
+        _learnButton.backgroundColor = [UIColor primaryGreen];
         
         _learnButton.layer.cornerRadius = 16;
         _learnButton.layer.masksToBounds = YES;

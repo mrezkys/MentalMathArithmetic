@@ -7,6 +7,7 @@
 
 #import "GameViewController.h"
 #import "GameViewModel.h"
+#import "UIColor+Theme.h"
 
 @interface GameViewController ()
 @property (strong, nonatomic) GameViewModel *viewModel;
@@ -58,14 +59,14 @@
 
 - (CAShapeLayer *)trackLayer {
     if (!_trackLayer) {
-        CGFloat circleRadius = 100.0;
+        CGFloat circleRadius = self.view.bounds.size.width / 2 - 64;
         CGPoint circleCenter = CGPointMake(self.view.center.x, self.view.center.y - 100);
         UIBezierPath *trackPath = [UIBezierPath bezierPathWithArcCenter:circleCenter radius:circleRadius startAngle:-M_PI_2 endAngle:2 * M_PI - M_PI_2 clockwise:YES];
         
         _trackLayer = [CAShapeLayer layer];
         _trackLayer.path = trackPath.CGPath;
-        _trackLayer.strokeColor = [UIColor systemGray5Color].CGColor;
-        _trackLayer.lineWidth = 20.0;
+        _trackLayer.strokeColor = [UIColor lightBlue].CGColor;
+        _trackLayer.lineWidth = 32.0;
         _trackLayer.fillColor = [UIColor clearColor].CGColor;
     }
     return _trackLayer;
@@ -73,14 +74,14 @@
 
 - (CAShapeLayer *)progressLayer {
     if (!_progressLayer) {
-        CGFloat circleRadius = 100.0;
+        CGFloat circleRadius = self.view.bounds.size.width / 2 - 64;
         CGPoint circleCenter = CGPointMake(self.view.center.x, self.view.center.y - 100);
         UIBezierPath *trackPath = [UIBezierPath bezierPathWithArcCenter:circleCenter radius:circleRadius startAngle:-M_PI_2 endAngle:2 * M_PI - M_PI_2 clockwise:YES];
         
         _progressLayer = [CAShapeLayer layer];
         _progressLayer.path = trackPath.CGPath;
-        _progressLayer.strokeColor = [UIColor systemBlueColor].CGColor;
-        _progressLayer.lineWidth = 20.0;
+        _progressLayer.strokeColor = [UIColor primaryBlue].CGColor;
+        _progressLayer.lineWidth = 32.0;
         _progressLayer.fillColor = [UIColor clearColor].CGColor;
         _progressLayer.strokeEnd = 0.0;
     }
@@ -129,7 +130,7 @@
 - (UIView *)questionCard {
     if (!_questionCard) {
         _questionCard = [[UIView alloc] init];
-        _questionCard.backgroundColor = [UIColor colorWithRed:88/255.0 green:86/255.0 blue:122/255.0 alpha:1.0];
+        _questionCard.backgroundColor = [UIColor primaryPurple];
         _questionCard.layer.cornerRadius = 16;
         _questionCard.translatesAutoresizingMaskIntoConstraints = NO;
         [_questionCard addSubview:self.questionCardContentStackView];
@@ -192,7 +193,7 @@
         _pauseButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [_pauseButton setImage:[UIImage systemImageNamed:@"pause.fill"] forState:UIControlStateNormal];
         _pauseButton.tintColor = [UIColor blackColor];
-        _pauseButton.backgroundColor = [UIColor colorWithRed:255/255.0 green:224/255.0 blue:140/255.0 alpha:1.0];
+        _pauseButton.backgroundColor = [UIColor primaryYellow];
         _pauseButton.layer.cornerRadius = 16;
         _pauseButton.translatesAutoresizingMaskIntoConstraints = NO;
     }
@@ -208,7 +209,7 @@
         [_answerButton setImage:[UIImage systemImageNamed:@"chevron.right"] forState:UIControlStateNormal];
         _answerButton.tintColor = [UIColor whiteColor];
         _answerButton.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
-        _answerButton.backgroundColor = [UIColor colorWithRed:76/255.0 green:175/255.0 blue:80/255.0 alpha:1.0];
+        _answerButton.backgroundColor = [UIColor primaryGreen];
         _answerButton.layer.cornerRadius = 16;
         _answerButton.translatesAutoresizingMaskIntoConstraints = NO;
     }
