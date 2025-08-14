@@ -9,6 +9,8 @@
 #import "HomeCoordinator.h"
 #import "../ViewModel/HomeViewModel.h"
 #import "../View/HomeViewController.h"
+#import "GameViewModel.h"
+#import "GameViewController.h"
 
 @interface HomeCoordinator ()
 @property (nonatomic, strong) id<Router> router;
@@ -33,6 +35,10 @@
 }
 
 - (void)showGame {
+    GameViewModel *vm = [GameViewModel new];
+    GameViewController *vc = [[GameViewController alloc] initWithViewModel:vm];
+    
+    [self.router push:vc animated:true];
 }
 
 @end
