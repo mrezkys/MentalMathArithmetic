@@ -7,8 +7,8 @@
 
 #import <Foundation/Foundation.h>
 #import "HomeCoordinator.h"
-#import "../ViewModel/HomeViewModel.h"
-#import "../View/HomeViewController.h"
+#import "HomeViewModel.h"
+#import "HomeViewController.h"
 #import "GameViewModel.h"
 #import "GameViewController.h"
 

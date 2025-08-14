@@ -7,9 +7,9 @@
 
 #import "SceneDelegate.h"
 #import "HomeViewController.h"
-#import "../Router/Router.h"
-#import "../Router/NavRouter.h"
-#import "../AppCoordinator/AppCoordinator.h"
+#import "Router.h"
+#import "NavRouter.h"
+#import "AppCoordinator.h"
 
 @interface SceneDelegate ()
 @property (strong, nonatomic) AppCoordinator *appCoordinator;

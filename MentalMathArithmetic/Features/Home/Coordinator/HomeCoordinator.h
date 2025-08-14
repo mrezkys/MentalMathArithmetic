@@ -11,7 +11,7 @@
 #define HomeCoordinator_h
 
 #import <Foundation/Foundation.h>
-#import "../../../App/Router/Router.h"
+#import "Router.h"
 
 
 @interface HomeCoordinator : NSObject

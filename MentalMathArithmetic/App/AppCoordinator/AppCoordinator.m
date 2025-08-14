@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AppCoordinator.h"
-#import "../../Features/Home/Coordinator/HomeCoordinator.h"
+#import "HomeCoordinator.h"
 
 @interface AppCoordinator ()
 @property (nonatomic, strong) id<Router> router;

@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "../ViewModel/HomeViewModel.h"
+#import "HomeViewModel.h"
 
 @interface HomeViewController : UIViewController
 - (instancetype)initWithViewModel:(HomeViewModel *)vm;
