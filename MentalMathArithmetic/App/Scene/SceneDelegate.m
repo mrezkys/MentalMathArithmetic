@@ -7,9 +7,12 @@
 
 #import "SceneDelegate.h"
 #import "HomeViewController.h"
+#import "../Router/Router.h"
+#import "../Router/NavRouter.h"
+#import "../AppCoordinator/AppCoordinator.h"
 
 @interface SceneDelegate ()
-
+@property (strong, nonatomic) AppCoordinator *appCoordinator;
 @end
 
 @implementation SceneDelegate
@@ -22,12 +25,13 @@
     
     self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
     
-    HomeViewController *root = [[HomeViewController alloc] init];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:root];
-    
+    UINavigationController *nav = [UINavigationController new];
     self.window.rootViewController = nav;
-    
     [self.window makeKeyAndVisible];
+    
+    id<Router> router = [[NavRouter alloc] initWithNavigationController:nav];
+    self.appCoordinator = [[AppCoordinator alloc] initWithRouter:router];
+    [self.appCoordinator start];
 }
 
 
