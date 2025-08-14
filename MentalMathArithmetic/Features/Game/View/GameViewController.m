@@ -8,6 +8,7 @@
 #import "GameViewController.h"
 #import "GameViewModel.h"
 #import "UIColor+Theme.h"
+#import "UIView+Borders.h"
 
 @interface GameViewController ()
 @property (strong, nonatomic) GameViewModel *viewModel;
@@ -229,10 +230,9 @@
 - (UIView *)footerView {
     if (!_footerView) {
         _footerView = [[UIView alloc] init];
-        _footerView.layer.borderWidth = 1.0;
-        _footerView.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _footerView.translatesAutoresizingMaskIntoConstraints = NO;
         [_footerView addSubview:self.footerStackView];
+        [_footerView addBorderOnSide:UIBorderSideTop color:[UIColor lightGrayColor] width:1.0];
     }
     return _footerView;
 }
