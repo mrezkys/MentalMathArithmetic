@@ -12,6 +12,14 @@
 @end
 
 @implementation HomeViewController
+
+- (instancetype)initWithViewModel:(HomeViewModel *)vm {
+    if (self = [super init]) {
+        _viewModel = vm;
+    }
+    return self;
+}
+
 - (UIStackView *)mainStackView {
     if (!_mainStackView) {
         _mainStackView = [[UIStackView alloc] init];
@@ -58,6 +66,9 @@
         [_startGameButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; 
 
         _startGameButton.translatesAutoresizingMaskIntoConstraints = false;
+        
+        [_startGameButton addTarget:self action:@selector(didTapStart) forControlEvents:UIControlEventTouchUpInside];
+
     }
     return _startGameButton;
 }
@@ -181,10 +192,9 @@
     
 }
 
-
-
-
-
+- (void)didTapStart {
+    [self.viewModel startGameTapped];
+}
 
 
 @end
