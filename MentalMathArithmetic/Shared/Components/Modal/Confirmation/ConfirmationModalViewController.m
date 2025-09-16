@@ -131,13 +131,19 @@
 
 - (void)handleConfirmTap {
     if (self.confirmHandler) {
-        self.confirmHandler();
+        [self dismissViewControllerAnimated:true completion:^{
+            self.confirmHandler();
+        }];
+    } else {
+        [self dismissViewControllerAnimated:true completion:nil];
     }
 }
 
 - (void)handleCancelTap {
     if (self.cancelHandler) {
-        self.cancelHandler();
+        [self dismissViewControllerAnimated:true completion:^{
+            self.cancelHandler();
+        }];
     } else {
         [self dismissViewControllerAnimated:true completion:nil];
     }
