@@ -9,6 +9,10 @@
 #import "GameViewModel.h"
 #import "UIColor+Theme.h"
 #import "UIView+Borders.h"
+#import "GameQuestionCardAnswerBoxView.h"
+#import "ConfirmationModalViewController.h"
+#import "AnswerQuestionModalViewController.h"
+#import "TimeCounterModalViewController.h"
 
 @interface GameViewController ()
 @property (strong, nonatomic) GameViewModel *viewModel;
@@ -21,7 +25,10 @@
 @property (strong, nonatomic) UILabel *questionLabel;
 @property (strong, nonatomic) UILabel *tapToShowLabel;
 @property (strong, nonatomic) UIStackView *questionCardContentStackView;
+@property (strong, nonatomic) UIView *questionCardContentHeaderView;
+@property (strong, nonatomic) UIStackView *questionCardContentHeaderStackView;
 @property (strong, nonatomic) UIImageView *bookIllustration;
+@property (nonatomic, strong) NSLayoutConstraint *bookIllustrationHeightConstraint;
 @property (strong, nonatomic) UIStackView *questionCardMainStackView;
 @property (strong, nonatomic) UIButton *pauseButton;
 @property (strong, nonatomic) UIButton *answerButton;
@@ -44,7 +51,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupDefaultView];
-    [self.viewModel start];
+    
+//    TimeCounterModalViewController *modal =
+//        [[TimeCounterModalViewController alloc] initWithTitle:@"Get Ready,\nGame will start in..."
+//                                                startingValue:3];
+//    
+//    modal.completionHandler = ^{
+//        [self.viewModel start];
+//    };
+//    [self presentViewController:modal animated:YES completion:nil];
+    
 }
 
 - (void)setupDefaultView {
@@ -53,6 +69,9 @@
     [self setupProgressLabelStackView];
     [self setupFooterView];
     [self setupQuestionCardMainStackView];
+    
+    
+    
     [self updateProgress];
 }
 
@@ -128,13 +147,58 @@
     return _bookIllustration;
 }
 
+- (UIView *)questionCardContentHeaderView {
+    if (!_questionCardContentHeaderView) {
+        _questionCardContentHeaderView = [[UIView alloc] init];
+        _questionCardContentHeaderView.translatesAutoresizingMaskIntoConstraints = false;
+        _questionCardContentHeaderView.backgroundColor = [UIColor primaryPurple];
+        [_questionCardContentHeaderView addSubview:self.questionCardContentHeaderStackView];
+        
+        [NSLayoutConstraint activateConstraints:@[
+                    [self.questionCardContentHeaderStackView.leadingAnchor constraintEqualToAnchor:_questionCardContentHeaderView.leadingAnchor constant:12],
+                    [self.questionCardContentHeaderStackView.trailingAnchor constraintEqualToAnchor:_questionCardContentHeaderView.trailingAnchor constant:-12],
+                    [self.questionCardContentHeaderStackView.topAnchor constraintEqualToAnchor:_questionCardContentHeaderView.topAnchor constant:12],
+                    [self.questionCardContentHeaderStackView.bottomAnchor constraintEqualToAnchor:_questionCardContentHeaderView.bottomAnchor constant:-12],
+                ]];
+    }
+    return _questionCardContentHeaderView;
+}
+
+- (UIStackView *)questionCardContentHeaderStackView {
+    if (!_questionCardContentHeaderStackView) {
+        
+        UILabel *playingLabel = [[UILabel alloc] init];
+        playingLabel.text = @"Playing 🔊";
+        playingLabel.font = [UIFont systemFontOfSize:14];
+        playingLabel.textColor = [UIColor whiteColor];
+        
+        UIStackView *topContentHorizontalStackView = [[UIStackView alloc] initWithArrangedSubviews:@[self.questionLabel, self.tapToShowLabel]];
+        topContentHorizontalStackView.axis = UILayoutConstraintAxisHorizontal;
+        topContentHorizontalStackView.distribution = UIStackViewDistributionEqualSpacing;
+        topContentHorizontalStackView.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        
+        _questionCardContentHeaderStackView = [[UIStackView alloc] initWithArrangedSubviews:@[topContentHorizontalStackView, playingLabel]];
+        _questionCardContentHeaderStackView.axis = UILayoutConstraintAxisVertical;
+        _questionCardContentHeaderStackView.spacing = 4;
+        _questionCardContentHeaderStackView.translatesAutoresizingMaskIntoConstraints = NO;
+        _questionCardContentHeaderStackView.alignment = UIStackViewAlignmentFill;
+    }
+    return _questionCardContentHeaderStackView;
+}
+
 - (UIView *)questionCard {
     if (!_questionCard) {
         _questionCard = [[UIView alloc] init];
         _questionCard.backgroundColor = [UIColor primaryPurple];
         _questionCard.layer.cornerRadius = 16;
+        _questionCard.clipsToBounds = true;
         _questionCard.translatesAutoresizingMaskIntoConstraints = NO;
         [_questionCard addSubview:self.questionCardContentStackView];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(checkQuestionState)];
+        [_questionCard addGestureRecognizer:tapGesture];
+        _questionCard.userInteractionEnabled = YES;
     }
     return _questionCard;
 }
@@ -159,18 +223,10 @@
     return _tapToShowLabel;
 }
 
+
 - (UIStackView *)questionCardContentStackView {
     if (!_questionCardContentStackView) {
-        UILabel *playingLabel = [[UILabel alloc] init];
-        playingLabel.text = @"Playing 🔊";
-        playingLabel.font = [UIFont systemFontOfSize:14];
-        playingLabel.textColor = [UIColor whiteColor];
-        
-        UIStackView *topContentStackView = [[UIStackView alloc] initWithArrangedSubviews:@[self.questionLabel, self.tapToShowLabel]];
-        topContentStackView.axis = UILayoutConstraintAxisHorizontal;
-        topContentStackView.distribution = UIStackViewDistributionEqualSpacing;
-        
-        _questionCardContentStackView = [[UIStackView alloc] initWithArrangedSubviews:@[topContentStackView, playingLabel]];
+        _questionCardContentStackView = [[UIStackView alloc] initWithArrangedSubviews:@[self.questionCardContentHeaderView]];
         _questionCardContentStackView.axis = UILayoutConstraintAxisVertical;
         _questionCardContentStackView.spacing = 4;
         _questionCardContentStackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -256,15 +312,18 @@
 
 - (void)setupQuestionCardMainStackView {
     [self.view addSubview:self.questionCardMainStackView];
+    
+    self.bookIllustrationHeightConstraint = [self.bookIllustration.heightAnchor constraintEqualToConstant:32];
+
 
     [NSLayoutConstraint activateConstraints:@[
         [self.questionCard.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:24],
         [self.questionCard.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-24],
-        [self.bookIllustration.heightAnchor constraintEqualToConstant:32],
-        [self.questionCardContentStackView.leadingAnchor constraintEqualToAnchor:self.questionCard.leadingAnchor constant:16],
-        [self.questionCardContentStackView.trailingAnchor constraintEqualToAnchor:self.questionCard.trailingAnchor constant:-16],
-        [self.questionCardContentStackView.topAnchor constraintEqualToAnchor:self.questionCard.topAnchor constant:16],
-        [self.questionCardContentStackView.bottomAnchor constraintEqualToAnchor:self.questionCard.bottomAnchor constant:-16],
+        self.bookIllustrationHeightConstraint,
+        [self.questionCardContentStackView.leadingAnchor constraintEqualToAnchor:self.questionCard.leadingAnchor],
+        [self.questionCardContentStackView.trailingAnchor constraintEqualToAnchor:self.questionCard.trailingAnchor],
+        [self.questionCardContentStackView.topAnchor constraintEqualToAnchor:self.questionCard.topAnchor],
+        [self.questionCardContentStackView.bottomAnchor constraintEqualToAnchor:self.questionCard.bottomAnchor],
 
         [self.questionCardMainStackView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:20],
         [self.questionCardMainStackView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-20],
@@ -298,6 +357,76 @@
     
     CGFloat progress = (CGFloat)self.viewModel.spelledNumberCount / self.viewModel.totalNumberCount;
     self.progressLayer.strokeEnd = progress;
+}
+
+- (void) checkQuestionState {
+    if (true) { // not answered
+        ConfirmationModalViewController *modal = [
+            [ConfirmationModalViewController new]
+            initWithTitle:@"To open question you need to answer first"
+            message:nil
+            confirmTitle:@"Answer Question"
+            cancelTitle:nil
+        ];
+        
+        modal.confirmHandler = ^{
+            [self showAnswerQuestionModal];
+        };
+
+        [self presentViewController:modal animated:true completion:nil];
+    } else {
+        
+    }
+}
+
+- (void) showAnswerQuestionModal {
+    AnswerQuestionModalViewController *modal = [
+        [AnswerQuestionModalViewController new]
+        initWithTitle:@"Type your answer below and check if it’s true."
+        placeholder:nil
+    ];
+    
+    modal.submitHandler = ^(NSString * _Nullable answer) {
+        [self checkAnswer:answer];
+    };
+    
+    [self presentViewController:modal animated:true completion:nil];
+}
+
+- (void) checkAnswer:(NSString *) answer {
+    if (true) { // true answer
+        [self expandQuestionBox];
+    }
+}
+
+- (void) expandQuestionBox {
+    [self.progressLayer setHidden:true];
+    [self.trackLayer setHidden:true];
+    [self.progressLabelStackView setHidden:true];
+    
+    GameQuestionCardAnswerBoxView *newView = [GameQuestionCardAnswerBoxView new];
+    
+    [self.questionCardContentStackView addArrangedSubview:newView];
+    
+    self.bookIllustrationHeightConstraint.constant = 64;
+    [UIView animateWithDuration:0.25 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)didQuestionAnswered {
+//    [self.progressLayer setHidden:true];
+//    [self.trackLayer setHidden:true];
+//    [self.progressLabelStackView setHidden:true];
+//    
+//    GameQuestionCardAnswerBoxView *newView = [GameQuestionCardAnswerBoxView new];
+//    
+//    [self.questionCardContentStackView addArrangedSubview:newView];
+//    
+//    self.bookIllustrationHeightConstraint.constant = 64;
+//    [UIView animateWithDuration:0.25 animations:^{
+//        [self.view layoutIfNeeded];
+//    }];
 }
 
 //GameViewModelDelegate
