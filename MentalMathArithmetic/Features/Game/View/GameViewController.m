@@ -21,12 +21,7 @@
 @property (strong, nonatomic) UILabel *repetitionLabel;
 @property (strong, nonatomic) UILabel *progressLabel;
 @property (strong, nonatomic) UIStackView *progressLabelStackView;
-@property (strong, nonatomic) UIView *questionCard;
-@property (strong, nonatomic) UILabel *questionLabel;
-@property (strong, nonatomic) UILabel *tapToShowLabel;
-@property (strong, nonatomic) UIStackView *questionCardContentStackView;
-@property (strong, nonatomic) UIView *questionCardContentHeaderView;
-@property (strong, nonatomic) UIStackView *questionCardContentHeaderStackView;
+@property (strong, nonatomic) GameQuestionCardAnswerBoxView *questionCardView;
 @property (strong, nonatomic) UIImageView *bookIllustration;
 @property (nonatomic, strong) NSLayoutConstraint *bookIllustrationHeightConstraint;
 @property (strong, nonatomic) UIStackView *questionCardMainStackView;
@@ -147,96 +142,20 @@
     return _bookIllustration;
 }
 
-- (UIView *)questionCardContentHeaderView {
-    if (!_questionCardContentHeaderView) {
-        _questionCardContentHeaderView = [[UIView alloc] init];
-        _questionCardContentHeaderView.translatesAutoresizingMaskIntoConstraints = false;
-        _questionCardContentHeaderView.backgroundColor = [UIColor primaryPurple];
-        [_questionCardContentHeaderView addSubview:self.questionCardContentHeaderStackView];
-        
-        [NSLayoutConstraint activateConstraints:@[
-                    [self.questionCardContentHeaderStackView.leadingAnchor constraintEqualToAnchor:_questionCardContentHeaderView.leadingAnchor constant:12],
-                    [self.questionCardContentHeaderStackView.trailingAnchor constraintEqualToAnchor:_questionCardContentHeaderView.trailingAnchor constant:-12],
-                    [self.questionCardContentHeaderStackView.topAnchor constraintEqualToAnchor:_questionCardContentHeaderView.topAnchor constant:12],
-                    [self.questionCardContentHeaderStackView.bottomAnchor constraintEqualToAnchor:_questionCardContentHeaderView.bottomAnchor constant:-12],
-                ]];
+- (GameQuestionCardAnswerBoxView *)questionCardView {
+    if (!_questionCardView) {
+        _questionCardView = [GameQuestionCardAnswerBoxView new];
+        __weak typeof(self) weakSelf = self;
+        _questionCardView.tapHandler = ^{
+            [weakSelf checkQuestionState];
+        };
     }
-    return _questionCardContentHeaderView;
-}
-
-- (UIStackView *)questionCardContentHeaderStackView {
-    if (!_questionCardContentHeaderStackView) {
-        
-        UILabel *playingLabel = [[UILabel alloc] init];
-        playingLabel.text = @"Playing 🔊";
-        playingLabel.font = [UIFont systemFontOfSize:14];
-        playingLabel.textColor = [UIColor whiteColor];
-        
-        UIStackView *topContentHorizontalStackView = [[UIStackView alloc] initWithArrangedSubviews:@[self.questionLabel, self.tapToShowLabel]];
-        topContentHorizontalStackView.axis = UILayoutConstraintAxisHorizontal;
-        topContentHorizontalStackView.distribution = UIStackViewDistributionEqualSpacing;
-        topContentHorizontalStackView.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        
-        _questionCardContentHeaderStackView = [[UIStackView alloc] initWithArrangedSubviews:@[topContentHorizontalStackView, playingLabel]];
-        _questionCardContentHeaderStackView.axis = UILayoutConstraintAxisVertical;
-        _questionCardContentHeaderStackView.spacing = 4;
-        _questionCardContentHeaderStackView.translatesAutoresizingMaskIntoConstraints = NO;
-        _questionCardContentHeaderStackView.alignment = UIStackViewAlignmentFill;
-    }
-    return _questionCardContentHeaderStackView;
-}
-
-- (UIView *)questionCard {
-    if (!_questionCard) {
-        _questionCard = [[UIView alloc] init];
-        _questionCard.backgroundColor = [UIColor primaryPurple];
-        _questionCard.layer.cornerRadius = 16;
-        _questionCard.clipsToBounds = true;
-        _questionCard.translatesAutoresizingMaskIntoConstraints = NO;
-        [_questionCard addSubview:self.questionCardContentStackView];
-        
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(checkQuestionState)];
-        [_questionCard addGestureRecognizer:tapGesture];
-        _questionCard.userInteractionEnabled = YES;
-    }
-    return _questionCard;
-}
-
-- (UILabel *)questionLabel {
-    if (!_questionLabel) {
-        _questionLabel = [[UILabel alloc] init];
-        _questionLabel.text = @"Question";
-        _questionLabel.font = [UIFont systemFontOfSize:24 weight:UIFontWeightBold];
-        _questionLabel.textColor = [UIColor whiteColor];
-    }
-    return _questionLabel;
-}
-
-- (UILabel *)tapToShowLabel {
-    if (!_tapToShowLabel) {
-        _tapToShowLabel = [[UILabel alloc] init];
-        _tapToShowLabel.text = @"Tap to show";
-        _tapToShowLabel.font = [UIFont systemFontOfSize:14];
-        _tapToShowLabel.textColor = [UIColor whiteColor];
-    }
-    return _tapToShowLabel;
-}
-
-
-- (UIStackView *)questionCardContentStackView {
-    if (!_questionCardContentStackView) {
-        _questionCardContentStackView = [[UIStackView alloc] initWithArrangedSubviews:@[self.questionCardContentHeaderView]];
-        _questionCardContentStackView.axis = UILayoutConstraintAxisVertical;
-        _questionCardContentStackView.spacing = 4;
-        _questionCardContentStackView.translatesAutoresizingMaskIntoConstraints = NO;
-    }
-    return _questionCardContentStackView;
+    return _questionCardView;
 }
 
 - (UIStackView *)questionCardMainStackView {
     if (!_questionCardMainStackView) {
-        _questionCardMainStackView = [[UIStackView alloc] initWithArrangedSubviews:@[self.bookIllustration, self.questionCard]];
+        _questionCardMainStackView = [[UIStackView alloc] initWithArrangedSubviews:@[self.bookIllustration, self.questionCardView]];
         _questionCardMainStackView.alignment = UIStackViewAlignmentCenter;
         _questionCardMainStackView.axis = UILayoutConstraintAxisVertical;
         _questionCardMainStackView.spacing = 0;
@@ -317,14 +236,9 @@
 
 
     [NSLayoutConstraint activateConstraints:@[
-        [self.questionCard.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:24],
-        [self.questionCard.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-24],
+        [self.questionCardView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:24],
+        [self.questionCardView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-24],
         self.bookIllustrationHeightConstraint,
-        [self.questionCardContentStackView.leadingAnchor constraintEqualToAnchor:self.questionCard.leadingAnchor],
-        [self.questionCardContentStackView.trailingAnchor constraintEqualToAnchor:self.questionCard.trailingAnchor],
-        [self.questionCardContentStackView.topAnchor constraintEqualToAnchor:self.questionCard.topAnchor],
-        [self.questionCardContentStackView.bottomAnchor constraintEqualToAnchor:self.questionCard.bottomAnchor],
-
         [self.questionCardMainStackView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:20],
         [self.questionCardMainStackView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-20],
         [self.questionCardMainStackView.bottomAnchor constraintEqualToAnchor:self.footerView.topAnchor constant:-16]
@@ -404,10 +318,8 @@
     [self.trackLayer setHidden:true];
     [self.progressLabelStackView setHidden:true];
     
-    GameQuestionCardAnswerBoxView *newView = [GameQuestionCardAnswerBoxView new];
-    
-    [self.questionCardContentStackView addArrangedSubview:newView];
-    
+    [self.questionCardView setExpanded:YES animated:YES];
+
     self.bookIllustrationHeightConstraint.constant = 64;
     [UIView animateWithDuration:0.25 animations:^{
         [self.view layoutIfNeeded];
@@ -415,18 +327,6 @@
 }
 
 - (void)didQuestionAnswered {
-//    [self.progressLayer setHidden:true];
-//    [self.trackLayer setHidden:true];
-//    [self.progressLabelStackView setHidden:true];
-//    
-//    GameQuestionCardAnswerBoxView *newView = [GameQuestionCardAnswerBoxView new];
-//    
-//    [self.questionCardContentStackView addArrangedSubview:newView];
-//    
-//    self.bookIllustrationHeightConstraint.constant = 64;
-//    [UIView animateWithDuration:0.25 animations:^{
-//        [self.view layoutIfNeeded];
-//    }];
 }
 
 //GameViewModelDelegate
