@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
 - (void)setQuestionText:(NSString *)text;
 - (void)setAnswerText:(NSString *)text;
+- (void)setStatusText:(NSString *)text;
 
 @end
 

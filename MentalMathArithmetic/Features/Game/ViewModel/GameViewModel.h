@@ -10,25 +10,24 @@
 
 #import <Foundation/Foundation.h>
 
-@class GameViewModel;
-
-@protocol GameViewModelDelegate <NSObject>
-
-- (void)viewModelDidUpdate:(GameViewModel *)viewModel;
-
-@end
+@class GameQuestionState;
+@class GameSession;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GameViewModel : NSObject
 
-@property (nonatomic, weak) id<GameViewModelDelegate> delegate;
 @property (nonatomic, readonly) NSInteger repetitionCount;
 @property (nonatomic, readonly) NSInteger totalRepetitions;
 @property (nonatomic, readonly) NSInteger spelledNumberCount;
 @property (nonatomic, readonly) NSInteger totalNumberCount;
+@property (nonatomic, strong, readonly, nullable) GameQuestionState *currentQuestionState;
+@property (nonatomic, strong, readonly, nullable) GameSession *currentSession;
 
 - (void)start;
+- (void)checkAnswer:(NSString *)answer;
+- (BOOL)advanceToNextQuestion;
+- (BOOL)hasActiveSession;
 
 @end
 

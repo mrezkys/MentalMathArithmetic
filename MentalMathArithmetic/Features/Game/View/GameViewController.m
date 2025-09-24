@@ -13,6 +13,11 @@
 #import "ConfirmationModalViewController.h"
 #import "AnswerQuestionModalViewController.h"
 #import "TimeCounterModalViewController.h"
+#import "GameQuestionState.h"
+#import "GameSession.h"
+#import "GameQuestion.h"
+#import "GameSessionProgressView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface GameViewController ()
 @property (strong, nonatomic) GameViewModel *viewModel;
@@ -21,6 +26,7 @@
 @property (strong, nonatomic) UILabel *repetitionLabel;
 @property (strong, nonatomic) UILabel *progressLabel;
 @property (strong, nonatomic) UIStackView *progressLabelStackView;
+@property (strong, nonatomic) GameSessionProgressView *sessionProgressView;
 @property (strong, nonatomic) GameQuestionCardAnswerBoxView *questionCardView;
 @property (strong, nonatomic) UIImageView *bookIllustration;
 @property (nonatomic, strong) NSLayoutConstraint *bookIllustrationHeightConstraint;
@@ -29,6 +35,7 @@
 @property (strong, nonatomic) UIButton *answerButton;
 @property (strong, nonatomic) UIStackView *footerStackView;
 @property (strong, nonatomic) UIView *footerView;
+@property (strong, nonatomic, nullable) CADisplayLink *progressDisplayLink;
 @end
 
 
@@ -37,37 +44,13 @@
 - (instancetype)initWithViewModel:(GameViewModel *)vm {
     if (self = [super init]) {
         _viewModel = vm;
-        _viewModel.delegate = self;
 
     }
     return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self setupDefaultView];
-    
-//    TimeCounterModalViewController *modal =
-//        [[TimeCounterModalViewController alloc] initWithTitle:@"Get Ready,\nGame will start in..."
-//                                                startingValue:3];
-//    
-//    modal.completionHandler = ^{
-//        [self.viewModel start];
-//    };
-//    [self presentViewController:modal animated:YES completion:nil];
-    
-}
-
-- (void)setupDefaultView {
-    self.view.backgroundColor = [UIColor whiteColor];
-    [self setupCircularProgress];
-    [self setupProgressLabelStackView];
-    [self setupFooterView];
-    [self setupQuestionCardMainStackView];
-    
-    
-    
-    [self updateProgress];
+- (void)dealloc {
+    [self stopProgressAnimation];
 }
 
 
@@ -132,6 +115,22 @@
     return _progressLabelStackView;
 }
 
+- (GameSessionProgressView *)sessionProgressView {
+    if (!_sessionProgressView) {
+        _sessionProgressView = [[GameSessionProgressView alloc] init];
+        
+        [self.view addSubview:self.sessionProgressView];
+
+        [NSLayoutConstraint activateConstraints:@[
+            [self.sessionProgressView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:12.0],
+            [self.sessionProgressView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:24.0],
+            [self.sessionProgressView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-24.0],
+            [self.sessionProgressView.heightAnchor constraintEqualToConstant:6.0]
+        ]];
+    }
+    return _sessionProgressView;
+}
+
 - (UIImageView *)bookIllustration {
     if (!_bookIllustration) {
         _bookIllustration = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bookIllustration"]];
@@ -188,6 +187,9 @@
         _answerButton.backgroundColor = [UIColor primaryGreen];
         _answerButton.layer.cornerRadius = 16;
         _answerButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [_answerButton addTarget:self
+                           action:@selector(handleAnswerButtonTap)
+                 forControlEvents:UIControlEventTouchUpInside];
     }
     return _answerButton;
 }
@@ -210,6 +212,49 @@
         [_footerView addBorderOnSide:UIBorderSideTop color:[UIColor lightGrayColor] width:1.0];
     }
     return _footerView;
+}
+
+
+#pragma mark - Actions
+
+- (void)handleAnswerButtonTap {
+    GameQuestionState *state = self.viewModel.currentQuestionState;
+    if (state.isAwaitingAnswer) {
+        [self checkQuestionState];
+    } else {
+        BOOL advanced = [self.viewModel advanceToNextQuestion];
+        if (!advanced) {
+            [self.answerButton setTitle:@"End Session" forState:UIControlStateNormal];
+        } else {
+            [self updateProgress];
+            [self updateSessionProgress];
+            [self updateQuestionCard];
+        }
+    }
+    
+}
+
+
+#pragma mark - Private
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setupDefaultView];
+
+    [self.viewModel start];
+    [self updateProgress];
+    [self updateSessionProgress];
+    [self updateQuestionCard];
+    
+}
+
+- (void)setupDefaultView {
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self setupCircularProgress];
+    [self setupProgressLabelStackView];
+    [self setupFooterView];
+    [self setupQuestionCardMainStackView];
+    [self updateProgress];
 }
 
 
@@ -267,29 +312,109 @@
 }
 
 - (void)updateProgress {
-    self.progressLabel.text = [NSString stringWithFormat:@"%ld/%ld", (long)self.viewModel.repetitionCount, (long)self.viewModel.totalRepetitions];
-    
-    CGFloat progress = (CGFloat)self.viewModel.spelledNumberCount / self.viewModel.totalNumberCount;
+    NSInteger repetition = self.viewModel.repetitionCount;
+    NSInteger totalRepetitions = self.viewModel.totalRepetitions;
+    self.progressLabel.text = [NSString stringWithFormat:@"%ld/%ld", (long)repetition, (long)totalRepetitions];
+
+    NSInteger totalNumbers = self.viewModel.totalNumberCount;
+    NSInteger completedNumbers = self.viewModel.spelledNumberCount;
+    CGFloat progress = totalNumbers > 0 ? (CGFloat)completedNumbers / (CGFloat)totalNumbers : 0.0f;
     self.progressLayer.strokeEnd = progress;
 }
 
-- (void) checkQuestionState {
-    if (true) { // not answered
-        ConfirmationModalViewController *modal = [
-            [ConfirmationModalViewController new]
-            initWithTitle:@"To open question you need to answer first"
-            message:nil
-            confirmTitle:@"Answer Question"
-            cancelTitle:nil
-        ];
-        
+- (void)updateSessionProgress {
+    GameSession *session = self.viewModel.currentSession;
+    if (!session) {
+        [self.sessionProgressView configureWithStatuses:@[] currentIndex:NSNotFound];
+        return;
+    }
+
+    NSArray<NSNumber *> *statuses = session.questionStatuses;
+    NSInteger highlightIndex = session.isCompleted ? NSNotFound : session.currentQuestionIndex;
+
+    if (highlightIndex != NSNotFound) {
+        NSInteger cappedIndex = (NSInteger)statuses.count - 1;
+        if (cappedIndex < 0) {
+            highlightIndex = NSNotFound;
+        } else {
+            highlightIndex = MIN(MAX(highlightIndex, 0), cappedIndex);
+        }
+    }
+
+    [self.sessionProgressView configureWithStatuses:statuses currentIndex:highlightIndex];
+}
+
+- (void)updateQuestionCard {
+    GameQuestionState *state = self.viewModel.currentQuestionState;
+
+    if (!state) {
+        [self resetProgressAnimation];
+        [self.questionCardView setExpanded:NO animated:YES];
+        [self.questionCardView setQuestionText:@""];
+        [self.questionCardView setAnswerText:@""];
+        [self.questionCardView setStatusText:@"Playing 🔊"];
+        return;
+    }
+
+    [self.questionCardView setQuestionText:state.question.promptString];
+    NSString *answerText = [NSString stringWithFormat:@"= %ld", (long)state.question.expectedResult];
+    [self.questionCardView setAnswerText:answerText];
+
+    if (state.isAwaitingAnswer) {
+        [self applyPendingQuestionAppearance];
+    } else {
+        [self applyAnsweredQuestionAppearance];
+    }
+}
+
+- (void)presentSessionSummary {
+    GameSession *session = self.viewModel.currentSession;
+    if (!session || self.presentedViewController) {
+        return;
+    }
+
+    NSString *message = [NSString stringWithFormat:@"You answered %ld of %lu correctly.",
+                         (long)session.correctAnswerCount,
+                         (unsigned long)session.questions.count];
+
+    ConfirmationModalViewController *modal = [[ConfirmationModalViewController new]
+        initWithTitle:@"Session Complete"
+             message:message
+         confirmTitle:@"Play Again"
+          cancelTitle:@"Close"];
+
+    __weak typeof(self) weakSelf = self;
+    modal.confirmHandler = ^{
+        [weakSelf.viewModel start];
+        [weakSelf updateProgress];
+        [weakSelf updateSessionProgress];
+        [weakSelf updateQuestionCard];
+    };
+
+    [self presentViewController:modal animated:YES completion:nil];
+}
+
+- (void)checkQuestionState {
+    GameQuestionState *state = self.viewModel.currentQuestionState;
+
+    if (!state) {
+        [self presentSessionSummary];
+        return;
+    }
+
+    if (state.isAwaitingAnswer) {
+        ConfirmationModalViewController *modal = [[ConfirmationModalViewController new]
+            initWithTitle:@"To open the question, you need to answer first"
+                 message:nil
+             confirmTitle:@"Answer Question"
+              cancelTitle:nil];
+
+        __weak typeof(self) weakSelf = self;
         modal.confirmHandler = ^{
-            [self showAnswerQuestionModal];
+            [weakSelf showAnswerQuestionModal];
         };
 
-        [self presentViewController:modal animated:true completion:nil];
-    } else {
-        
+        [self presentViewController:modal animated:YES completion:nil];
     }
 }
 
@@ -307,10 +432,10 @@
     [self presentViewController:modal animated:true completion:nil];
 }
 
-- (void) checkAnswer:(NSString *) answer {
-    if (true) { // true answer
-        [self expandQuestionBox];
-    }
+- (void)checkAnswer:(NSString *)answer {
+    [self.viewModel checkAnswer:answer];
+    [self updateQuestionCard];
+    [self updateSessionProgress];
 }
 
 - (void) expandQuestionBox {
@@ -326,13 +451,83 @@
     }];
 }
 
-- (void)didQuestionAnswered {
+- (void)showProgressUI {
+    self.progressLayer.hidden = NO;
+    self.trackLayer.hidden = NO;
+    self.progressLabelStackView.hidden = NO;
 }
 
-//GameViewModelDelegate
+- (void)applyPendingQuestionAppearance {
+    [self resetProgressAnimation];
+    [self showProgressUI];
+    [self.questionCardView setExpanded:NO animated:YES];
+    [self.questionCardView setStatusText:@"Playing 🔊"];
+    [self changeAnswerButtonStyleForAdvanced:NO];
 
-- (void)viewModelDidUpdate:(GameViewModel *)viewModel {
+    self.bookIllustrationHeightConstraint.constant = 32;
+    [UIView animateWithDuration:0.25 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+
+    [self startProgressAnimation];
+}
+
+- (void)applyAnsweredQuestionAppearance {
+    [self stopProgressAnimation];
+    [self expandQuestionBox];
+    [self.questionCardView setStatusText:@"Question Revealed"];
+    [self changeAnswerButtonStyleForAdvanced:YES];
+}
+
+- (void)startProgressAnimation {
+    if (self.progressDisplayLink || ![self.viewModel hasActiveSession]) {
+        return;
+    }
+
+    self.progressDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(handleProgressDisplayLink:)];
+    [self.progressDisplayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+- (void)handleProgressDisplayLink:(CADisplayLink *)displayLink {
     [self updateProgress];
 }
 
+- (void)stopProgressAnimation {
+    if (!self.progressDisplayLink) {
+        return;
+    }
+
+    [self.progressDisplayLink invalidate];
+    self.progressDisplayLink = nil;
+}
+
+- (void)resetProgressAnimation {
+    [self stopProgressAnimation];
+    [self updateProgress];
+}
+
+- (void)changeAnswerButtonStyleForAdvanced:(BOOL)isAdvanced {
+    if (isAdvanced) {
+        [self.answerButton setTitle:@"Next Question" forState:UIControlStateNormal];
+    } else {
+        [self.answerButton setTitle:@"Answer Question" forState:UIControlStateNormal];
+    }
+}
+
+
+- (void)resetViewToDefault {
+    [self changeAnswerButtonStyleForAdvanced:false];
+}
+
 @end
+
+//
+//else {
+//    BOOL advanced = [self.viewModel advanceToNextQuestion];
+//    [self updateProgress];
+//    [self updateSessionProgress];
+//    [self updateQuestionCard];
+//    if (!advanced) {
+//        [self presentSessionSummary];
+//    }
+//}

@@ -236,6 +236,10 @@
     self.answerLabel.text = text;
 }
 
+- (void)setStatusText:(NSString *)text {
+    self.statusLabel.text = text;
+}
+
 - (void)setExpanded:(BOOL)expanded animated:(BOOL)animated {
     if (_expanded == expanded) {
         return;
