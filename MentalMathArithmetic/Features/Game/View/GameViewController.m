@@ -17,6 +17,7 @@
 #import "GameSession.h"
 #import "GameQuestion.h"
 #import "GameSessionProgressView.h"
+#import "AnswerFeedbackView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface GameViewController ()
@@ -28,6 +29,7 @@
 @property (strong, nonatomic) UIStackView *progressLabelStackView;
 @property (strong, nonatomic) GameSessionProgressView *sessionProgressView;
 @property (strong, nonatomic) GameQuestionCardAnswerBoxView *questionCardView;
+@property (strong, nonatomic) AnswerFeedbackView *answerFeedbackView;
 @property (strong, nonatomic) UIImageView *bookIllustration;
 @property (nonatomic, strong) NSLayoutConstraint *bookIllustrationHeightConstraint;
 @property (strong, nonatomic) UIStackView *questionCardMainStackView;
@@ -152,6 +154,15 @@
     return _questionCardView;
 }
 
+- (AnswerFeedbackView *)answerFeedbackView {
+    if (!_answerFeedbackView) {
+        _answerFeedbackView = [AnswerFeedbackView new];
+        _answerFeedbackView.translatesAutoresizingMaskIntoConstraints = NO;
+        _answerFeedbackView.hidden = YES;
+    }
+    return _answerFeedbackView;
+}
+
 - (UIStackView *)questionCardMainStackView {
     if (!_questionCardMainStackView) {
         _questionCardMainStackView = [[UIStackView alloc] initWithArrangedSubviews:@[self.bookIllustration, self.questionCardView]];
@@ -171,6 +182,7 @@
         _pauseButton.backgroundColor = [UIColor primaryYellow];
         _pauseButton.layer.cornerRadius = 16;
         _pauseButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [_pauseButton addTarget:self action:@selector(handlePauseButtonTap) forControlEvents:UIControlEventTouchUpInside];
     }
     return _pauseButton;
 }
@@ -287,11 +299,15 @@
 
 - (void)setupQuestionCardMainStackView {
     [self.view addSubview:self.questionCardMainStackView];
+    [self.view addSubview:self.answerFeedbackView];
     
     self.bookIllustrationHeightConstraint = [self.bookIllustration.heightAnchor constraintEqualToConstant:32];
 
 
     [NSLayoutConstraint activateConstraints:@[
+        [self.answerFeedbackView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [self.answerFeedbackView.bottomAnchor constraintEqualToAnchor:self.questionCardMainStackView.topAnchor constant:-16],
+        
         [self.questionCardView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:24],
         [self.questionCardView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-24],
         self.bookIllustrationHeightConstraint,
@@ -445,6 +461,14 @@
 
 - (void)checkAnswer:(NSString *)answer {
     [self.viewModel checkAnswer:answer];
+    
+    GameQuestionState *state = self.viewModel.currentQuestionState;
+    if (state.answerStatus == GameQuestionAnswerStatusCorrect) {
+        [self.answerFeedbackView configureWithAnswer:answer type:AnswerFeedbackTypeCorrect];
+    } else {
+        [self.answerFeedbackView configureWithAnswer:answer type:AnswerFeedbackTypeIncorrect];
+    }
+    
     [self updateQuestionCard];
     [self updateSessionProgress];
 }
@@ -453,6 +477,7 @@
     [self.progressLayer setHidden:true];
     [self.trackLayer setHidden:true];
     [self.progressLabelStackView setHidden:true];
+    self.answerFeedbackView.hidden = NO;
     
     [self.questionCardView setExpanded:YES animated:YES];
 
@@ -471,6 +496,7 @@
 - (void)applyPendingQuestionAppearance {
     [self resetProgressAnimation];
     [self showProgressUI];
+    self.answerFeedbackView.hidden = YES;
     [self.questionCardView setExpanded:NO animated:YES];
     [self.questionCardView setStatusText:@"Playing 🔊"];
     [self changeAnswerButtonStyleForAdvanced:NO];
