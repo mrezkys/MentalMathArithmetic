@@ -199,25 +199,13 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
 - (void)handleSpellingTick {
     if (self.spelledNumberCount < self.totalNumberCount) {
         self.spelledNumberCount += 1;
-
-        if (self.spelledNumberCount >= self.totalNumberCount) {
-            [self handleRepetitionCompleted];
-        }
-        return;
-    }
-
-    [self handleRepetitionCompleted];
-}
-
-- (void)handleRepetitionCompleted {
-    [self invalidateSpellingTimer];
-
-    if (self.repetitionCount < self.totalRepetitions) {
-        self.repetitionCount += 1;
-        self.spelledNumberCount = 0;
-        [self startSpellingTimerIfNeeded];
     } else {
-        self.spelledNumberCount = self.totalNumberCount;
+        if (self.repetitionCount < self.totalRepetitions) {
+            self.repetitionCount += 1;
+            self.spelledNumberCount = 0;
+        } else {
+            [self invalidateSpellingTimer];
+        }
     }
 }
 
