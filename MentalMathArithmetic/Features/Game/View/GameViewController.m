@@ -230,7 +230,10 @@
 #pragma mark - Actions
 - (void)handlePauseButtonTap {
     [self.viewModel togglePause];
-    
+    [self updatePauseUI];
+}
+
+- (void)updatePauseUI {
     if (self.viewModel.isPaused) {
         [self stopProgressAnimation];
         [self.pauseButton setImage:[UIImage systemImageNamed:@"play.fill"] forState:UIControlStateNormal];
@@ -430,15 +433,27 @@
     }
 
     if (state.isAwaitingAnswer) {
+        if (!self.viewModel.isPaused) {
+            [self.viewModel togglePause];
+            [self updatePauseUI];
+        }
+        
         ConfirmationModalViewController *modal = [[ConfirmationModalViewController new]
             initWithTitle:@"To open the question, you need to answer first"
                  message:nil
              confirmTitle:@"Answer Question"
-              cancelTitle:nil];
+              cancelTitle:@"Cancel"];
 
         __weak typeof(self) weakSelf = self;
         modal.confirmHandler = ^{
             [weakSelf showAnswerQuestionModal];
+        };
+        
+        modal.cancelHandler = ^{
+            if (weakSelf.viewModel.isPaused) {
+                [weakSelf.viewModel togglePause];
+                [weakSelf updatePauseUI];
+            }
         };
 
         [self presentViewController:modal animated:YES completion:nil];
@@ -452,8 +467,20 @@
         placeholder:nil
     ];
     
+    __weak typeof(self) weakSelf = self;
     modal.submitHandler = ^(NSString * _Nullable answer) {
-        [self checkAnswer:answer];
+        [weakSelf checkAnswer:answer];
+        if (weakSelf.viewModel.isPaused) {
+            [weakSelf.viewModel togglePause];
+            [weakSelf updatePauseUI];
+        }
+    };
+    
+    modal.cancelHandler = ^{
+        if (weakSelf.viewModel.isPaused) {
+            [weakSelf.viewModel togglePause];
+            [weakSelf updatePauseUI];
+        }
     };
     
     [self presentViewController:modal animated:true completion:nil];
