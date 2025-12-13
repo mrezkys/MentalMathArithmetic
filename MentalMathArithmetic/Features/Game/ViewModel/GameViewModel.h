@@ -24,7 +24,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly, nullable) GameQuestionState *currentQuestionState;
 @property (nonatomic, strong, readonly, nullable) GameSession *currentSession;
 
+@property (nonatomic, assign, readonly) BOOL isPaused;
+
 - (void)start;
+- (void)togglePause;
 - (void)checkAnswer:(NSString *)answer;
 - (BOOL)advanceToNextQuestion;
 - (BOOL)hasActiveSession;

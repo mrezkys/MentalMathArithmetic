@@ -22,6 +22,7 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
 @property (nonatomic, assign, readwrite) NSInteger totalRepetitions;
 @property (nonatomic, assign, readwrite) NSInteger spelledNumberCount;
 @property (nonatomic, assign, readwrite) NSInteger totalNumberCount;
+@property (nonatomic, assign, readwrite) BOOL isPaused;
 
 @end
 
@@ -34,8 +35,18 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
         _repetitionCount = 0;
         _spelledNumberCount = 0;
         _totalNumberCount = 0;
+        _isPaused = NO;
     }
     return self;
+}
+    
+- (void)togglePause {
+    self.isPaused = !self.isPaused;
+    if (self.isPaused) {
+        [self invalidateSpellingTimer];
+    } else {
+        [self startSpellingTimerIfNeeded];
+    }
 }
 
 - (void)dealloc {

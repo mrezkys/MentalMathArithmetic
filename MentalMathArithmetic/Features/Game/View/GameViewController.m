@@ -216,6 +216,17 @@
 
 
 #pragma mark - Actions
+- (void)handlePauseButtonTap {
+    [self.viewModel togglePause];
+    
+    if (self.viewModel.isPaused) {
+        [self stopProgressAnimation];
+        [self.pauseButton setImage:[UIImage systemImageNamed:@"play.fill"] forState:UIControlStateNormal];
+    } else {
+        [self startProgressAnimation];
+        [self.pauseButton setImage:[UIImage systemImageNamed:@"pause.fill"] forState:UIControlStateNormal];
+    }
+}
 
 - (void)handleAnswerButtonTap {
     GameQuestionState *state = self.viewModel.currentQuestionState;
