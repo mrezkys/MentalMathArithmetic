@@ -19,9 +19,11 @@
 #import "GameSessionProgressView.h"
 #import "AnswerFeedbackView.h"
 #import <QuartzCore/QuartzCore.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface GameViewController ()
 @property (strong, nonatomic) GameViewModel *viewModel;
+@property (strong, nonatomic) AVSpeechSynthesizer *speechSynthesizer;
 @property (strong, nonatomic) CAShapeLayer *progressLayer;
 @property (strong, nonatomic) CAShapeLayer *trackLayer;
 @property (strong, nonatomic) UILabel *repetitionLabel;
@@ -46,12 +48,14 @@
 - (instancetype)initWithViewModel:(GameViewModel *)vm {
     if (self = [super init]) {
         _viewModel = vm;
-
+        _viewModel.delegate = self;
+        _speechSynthesizer = [[AVSpeechSynthesizer alloc] init];
     }
     return self;
 }
 
 - (void)dealloc {
+    [self.speechSynthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
     [self stopProgressAnimation];
 }
 
@@ -235,10 +239,13 @@
 
 - (void)updatePauseUI {
     if (self.viewModel.isPaused) {
+        [self.speechSynthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
         [self stopProgressAnimation];
         [self.pauseButton setImage:[UIImage systemImageNamed:@"play.fill"] forState:UIControlStateNormal];
     } else {
-        [self startProgressAnimation];
+        if (self.viewModel.currentQuestionState && [self.viewModel.currentQuestionState isAwaitingAnswer]) {
+            [self startProgressAnimation];
+        }
         [self.pauseButton setImage:[UIImage systemImageNamed:@"pause.fill"] forState:UIControlStateNormal];
     }
 }
@@ -470,10 +477,6 @@
     __weak typeof(self) weakSelf = self;
     modal.submitHandler = ^(NSString * _Nullable answer) {
         [weakSelf checkAnswer:answer];
-        if (weakSelf.viewModel.isPaused) {
-            [weakSelf.viewModel togglePause];
-            [weakSelf updatePauseUI];
-        }
     };
     
     modal.cancelHandler = ^{
@@ -581,6 +584,25 @@
 
 - (void)resetViewToDefault {
     [self changeAnswerButtonStyleForAdvanced:false];
+}
+
+#pragma mark - GameViewModelDelegate
+
+- (void)gameViewModel:(GameViewModel *)viewModel didSpellComponent:(GameQuestionComponent *)component {
+    NSMutableString *textToSpeak = [NSMutableString string];
+    
+    if (component.operatorType != GameQuestionOperatorNone) {
+        [textToSpeak appendString:GameQuestionOperatorSpeech(component.operatorType)];
+        [textToSpeak appendString:@" "];
+    }
+    
+    [textToSpeak appendFormat:@"%ld", (long)component.value];
+
+    AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:textToSpeak];
+    utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"en-US"];
+    utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 1.2;
+
+    [self.speechSynthesizer speakUtterance:utterance];
 }
 
 @end

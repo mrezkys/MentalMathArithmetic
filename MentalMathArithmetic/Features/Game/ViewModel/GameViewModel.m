@@ -45,7 +45,9 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
     if (self.isPaused) {
         [self invalidateSpellingTimer];
     } else {
-        [self startSpellingTimerIfNeeded];
+        if (self.currentQuestionState && [self.currentQuestionState isAwaitingAnswer]) {
+            [self startSpellingTimerIfNeeded];
+        }
     }
 }
 
@@ -199,12 +201,22 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
 - (void)handleSpellingTick {
     if (self.spelledNumberCount < self.totalNumberCount) {
         self.spelledNumberCount += 1;
+        
+        NSInteger componentIndex = self.spelledNumberCount - 1;
+        if (componentIndex < self.currentQuestionState.question.components.count) {
+            GameQuestionComponent *component = self.currentQuestionState.question.components[componentIndex];
+            [self.delegate gameViewModel:self didSpellComponent:component];
+        }
+        
     } else {
         if (self.repetitionCount < self.totalRepetitions) {
             self.repetitionCount += 1;
             self.spelledNumberCount = 0;
+            // The timer will fire again and the count will start from 0.
+            // But since it's not invalidated, it will continue.
         } else {
             [self invalidateSpellingTimer];
+            // Keep the spelledNumberCount at totalNumberCount to show a full circle.
         }
     }
 }

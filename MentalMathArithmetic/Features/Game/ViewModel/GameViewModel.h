@@ -10,12 +10,20 @@
 
 #import <Foundation/Foundation.h>
 
+@class GameViewModel;
 @class GameQuestionState;
 @class GameSession;
+@class GameQuestionComponent;
+
+@protocol GameViewModelDelegate <NSObject>
+- (void)gameViewModel:(GameViewModel *)viewModel didSpellComponent:(GameQuestionComponent *)component;
+@end
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GameViewModel : NSObject
+
+@property (nonatomic, weak, nullable) id<GameViewModelDelegate> delegate;
 
 @property (nonatomic, readonly) NSInteger repetitionCount;
 @property (nonatomic, readonly) NSInteger totalRepetitions;
