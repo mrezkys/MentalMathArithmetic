@@ -21,6 +21,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <AVFoundation/AVFoundation.h>
 
+static const float SpeechRate = 0.3f;
+
 @interface GameViewController ()
 @property (strong, nonatomic) GameViewModel *viewModel;
 @property (strong, nonatomic) AVSpeechSynthesizer *speechSynthesizer;
@@ -624,7 +626,7 @@
 
     AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:textToSpeak];
     utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"en-US"];
-    utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 1.2;
+    utterance.rate = SpeechRate;
 
     [self.speechSynthesizer speakUtterance:utterance];
 }
