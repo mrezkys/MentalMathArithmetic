@@ -16,6 +16,7 @@ typedef NS_ENUM(NSUInteger, GameQuestionAnswerStatus) {
 @property (nonatomic, copy, readonly) NSString *userAnswer;
 @property (nonatomic, assign, readonly) GameQuestionAnswerStatus answerStatus;
 @property (nonatomic, assign, readonly) NSInteger attempts;
+@property (nonatomic, assign, readwrite) NSInteger repetitionsUsed;
 
 - (instancetype)initWithQuestion:(GameQuestion *)question NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;

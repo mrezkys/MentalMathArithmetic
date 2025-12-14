@@ -9,6 +9,7 @@
 @property (nonatomic, assign, readwrite) NSInteger correctAnswerCount;
 @property (nonatomic, assign, readwrite, getter=isCompleted) BOOL completed;
 @property (nonatomic, strong) NSMutableArray<NSNumber *> *mutableQuestionStatuses;
+@property (nonatomic, strong) NSMutableArray<NSNumber *> *mutableQuestionRepetitionCounts;
 
 @end
 
@@ -24,9 +25,11 @@
         _correctAnswerCount = 0;
         _completed = NO;
         _mutableQuestionStatuses = [NSMutableArray arrayWithCapacity:questions.count];
+        _mutableQuestionRepetitionCounts = [NSMutableArray arrayWithCapacity:questions.count];
 
         for (NSUInteger index = 0; index < questions.count; index++) {
             [_mutableQuestionStatuses addObject:@(GameQuestionAnswerStatusPending)];
+            [_mutableQuestionRepetitionCounts addObject:@0];
         }
     }
     return self;
@@ -34,6 +37,10 @@
 
 - (NSArray<NSNumber *> *)questionStatuses {
     return [self.mutableQuestionStatuses copy];
+}
+
+- (NSArray<NSNumber *> *)questionRepetitionCounts {
+    return [self.mutableQuestionRepetitionCounts copy];
 }
 
 - (GameQuestion *)currentQuestion {
@@ -90,6 +97,15 @@
         self.correctAnswerCount = MAX(self.correctAnswerCount - 1, 0);
         self.score = MAX(self.score - 1, 0);
     }
+}
+
+- (void)recordRepetitionCountForCurrentQuestion:(NSInteger)count {
+    if (self.completed || self.currentQuestionIndex >= self.mutableQuestionRepetitionCounts.count) {
+        return;
+    }
+
+    NSInteger sanitized = MAX(count, 0);
+    self.mutableQuestionRepetitionCounts[self.currentQuestionIndex] = @(sanitized);
 }
 
 - (NSInteger)remainingQuestions {

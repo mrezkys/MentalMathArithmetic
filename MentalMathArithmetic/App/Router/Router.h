@@ -16,6 +16,7 @@
 - (void)push:(UIViewController *)vc animated:(BOOL)animated;
 - (void)present:(UIViewController *)vc animated:(BOOL)animated completion:(void (^_Nullable)(void))completion;
 - (void)popAnimated:(BOOL)animated;
+- (void)popToRootAnimated:(BOOL)animated;
 
 
 @end

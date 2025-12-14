@@ -20,6 +20,7 @@
         _userAnswer = @"";
         _answerStatus = GameQuestionAnswerStatusPending;
         _attempts = 0;
+        _repetitionsUsed = 0;
     }
     return self;
 }

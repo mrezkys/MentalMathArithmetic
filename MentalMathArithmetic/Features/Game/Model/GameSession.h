@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) NSInteger correctAnswerCount;
 @property (nonatomic, assign, readonly, getter=isCompleted) BOOL completed;
 @property (nonatomic, copy, readonly) NSArray<NSNumber *> *questionStatuses;
+@property (nonatomic, copy, readonly) NSArray<NSNumber *> *questionRepetitionCounts;
 
 - (instancetype)initWithQuestions:(NSArray<GameQuestion *> *)questions NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
@@ -20,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable GameQuestion *)currentQuestion;
 - (BOOL)advanceToNextQuestion;
 - (void)recordAnswerStatus:(GameQuestionAnswerStatus)status;
+- (void)recordRepetitionCountForCurrentQuestion:(NSInteger)count;
 - (NSInteger)remainingQuestions;
 
 @end

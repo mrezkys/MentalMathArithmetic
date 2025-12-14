@@ -37,4 +37,8 @@
     [self.nav popViewControllerAnimated:animated];
 }
 
+- (void)popToRootAnimated:(BOOL)animated {
+    [self.nav popToRootViewControllerAnimated:animated];
+}
+
 @end

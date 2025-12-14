@@ -259,7 +259,7 @@ static const float SpeechRate = 0.3f;
     } else {
         BOOL advanced = [self.viewModel advanceToNextQuestion];
         if (!advanced) {
-            [self.answerButton setTitle:@"End Session" forState:UIControlStateNormal];
+            [self handleSessionCompletion];
         } else {
             [self updateProgress];
             [self updateSessionProgress];
@@ -427,35 +427,11 @@ static const float SpeechRate = 0.3f;
 
 - (void)presentSessionSummary {
     GameSession *session = self.viewModel.currentSession;
-    if (!session || self.presentedViewController) {
+    if (!session) {
         return;
     }
-
-    NSString *message = [NSString stringWithFormat:@"You answered %ld of %lu correctly.",
-                         (long)session.correctAnswerCount,
-                         (unsigned long)session.questions.count];
-
-    ConfirmationModalViewController *modal = [[ConfirmationModalViewController new]
-        initWithTitle:@"Session Complete"
-             message:message
-         confirmTitle:@"Play Again"
-          cancelTitle:@"Close"];
-
-    __weak typeof(self) weakSelf = self;
-    modal.confirmHandler = ^{
-        [weakSelf.viewModel prepareNewSession];
-        [weakSelf updateProgress];
-        [weakSelf updateSessionProgress];
-        [weakSelf updateQuestionCard];
-        
-        TimeCounterModalViewController *countdownModal = [[TimeCounterModalViewController alloc] initWithTitle:@"Next Round Starts In..." startingValue:5];
-        countdownModal.completionHandler = ^{
-            [weakSelf.viewModel beginSpelling];
-        };
-        [weakSelf presentViewController:countdownModal animated:YES completion:nil];
-    };
-
-    [self presentViewController:modal animated:YES completion:nil];
+    
+    [self handleSessionCompletion];
 }
 
 - (void)checkQuestionState {
@@ -613,6 +589,42 @@ static const float SpeechRate = 0.3f;
 
 - (void)resetViewToDefault {
     [self changeAnswerButtonStyleForAdvanced:false];
+}
+
+- (void)handleSessionCompletion {
+    GameSession *session = self.viewModel.currentSession;
+    if (!session || !session.isCompleted) {
+        return;
+    }
+
+    NSArray<NSNumber *> *repetitionCounts = session.questionRepetitionCounts;
+    NSInteger repetitionSum = 0;
+    NSInteger repetitionEntries = 0;
+    for (NSNumber *number in repetitionCounts) {
+        NSInteger value = number.integerValue;
+        if (value > 0) {
+            repetitionSum += value;
+            repetitionEntries += 1;
+        }
+    }
+
+    CGFloat averageRepetition = 0.0f;
+    if (repetitionEntries > 0) {
+        averageRepetition = (CGFloat)repetitionSum / (CGFloat)repetitionEntries;
+    } else {
+        averageRepetition = (CGFloat)self.viewModel.totalRepetitions;
+    }
+    NSInteger totalQuestions = (NSInteger)session.questions.count;
+    NSInteger correctAnswers = session.correctAnswerCount;
+
+    CGFloat accuracy = 0.0f;
+    if (totalQuestions > 0) {
+        accuracy = (CGFloat)correctAnswers / (CGFloat)totalQuestions;
+    }
+
+    if (self.onSessionEnd) {
+        self.onSessionEnd(averageRepetition, accuracy, correctAnswers, totalQuestions);
+    }
 }
 
 #pragma mark - GameViewModelDelegate

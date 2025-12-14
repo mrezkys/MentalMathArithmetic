@@ -47,7 +47,7 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
 - (void)prepareNewSession {
     [self invalidateSpellingTimer];
 
-    self.currentSession = [self buildSessionWithQuestionCount:4];
+    self.currentSession = [self buildSessionWithQuestionCount:1];
     [self prepareCurrentQuestion];
 }
 
@@ -94,6 +94,9 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
 
     if (status != GameQuestionAnswerStatusPending) {
         [self.currentSession recordAnswerStatus:status];
+        NSInteger usedRepetition = MAX(self.repetitionCount, 0);
+        self.currentQuestionState.repetitionsUsed = usedRepetition;
+        [self.currentSession recordRepetitionCountForCurrentQuestion:usedRepetition];
         [self stopSpellingAndResetProgress];
     }
 }

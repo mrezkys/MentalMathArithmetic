@@ -11,6 +11,7 @@
 #import "HomeViewController.h"
 #import "GameViewModel.h"
 #import "GameViewController.h"
+#import "GameResultViewController.h"
 
 @interface HomeCoordinator ()
 @property (nonatomic, strong) id<Router> router;
@@ -38,7 +39,33 @@
     GameViewModel *vm = [GameViewModel new];
     GameViewController *vc = [[GameViewController alloc] initWithViewModel:vm];
     
+    __weak typeof(self) weakSelf = self;
+    vc.onSessionEnd = ^(CGFloat averageRepetition, CGFloat accuracy, NSInteger correctAnswerCount, NSInteger totalQuestionCount) {
+        [weakSelf showGameResultWithAverageRepetition:averageRepetition
+                                             accuracy:accuracy
+                                    correctAnswerCount:correctAnswerCount
+                                    totalQuestionCount:totalQuestionCount];
+    };
+    
     [self.router push:vc animated:true];
+}
+
+- (void)showGameResultWithAverageRepetition:(CGFloat)averageRepetition
+                                    accuracy:(CGFloat)accuracy
+                           correctAnswerCount:(NSInteger)correctAnswerCount
+                           totalQuestionCount:(NSInteger)totalQuestionCount {
+    GameResultViewController *vc = [[GameResultViewController alloc]
+        initWithAverageRepetition:averageRepetition
+                         accuracy:accuracy
+                correctAnswerCount:correctAnswerCount
+                totalQuestionCount:totalQuestionCount];
+    
+    __weak typeof(self) weakSelf = self;
+    vc.backToHomeHandler = ^{
+        [weakSelf.router popToRootAnimated:YES];
+    };
+    
+    [self.router push:vc animated:YES];
 }
 
 @end
