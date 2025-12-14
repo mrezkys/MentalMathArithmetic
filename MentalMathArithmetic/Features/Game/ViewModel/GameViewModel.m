@@ -40,6 +40,21 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
     return self;
 }
     
+- (void)dealloc {
+    [self invalidateSpellingTimer];
+}
+
+- (void)prepareNewSession {
+    [self invalidateSpellingTimer];
+
+    self.currentSession = [self buildSessionWithQuestionCount:4];
+    [self prepareCurrentQuestion];
+}
+
+- (void)beginSpelling {
+    [self startSpellingTimerIfNeeded];
+}
+
 - (void)togglePause {
     self.isPaused = !self.isPaused;
     if (self.isPaused) {
@@ -49,18 +64,6 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
             [self startSpellingTimerIfNeeded];
         }
     }
-}
-
-- (void)dealloc {
-    [self invalidateSpellingTimer];
-}
-
-- (void)start {
-    [self invalidateSpellingTimer];
-
-    self.currentSession = [self buildSessionWithQuestionCount:4];
-    [self prepareCurrentQuestion];
-    [self startSpellingTimerIfNeeded];
 }
 
 - (void)checkAnswer:(NSString *)answer {
@@ -103,7 +106,6 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
     BOOL advanced = [self.currentSession advanceToNextQuestion];
     if (advanced) {
         [self prepareCurrentQuestion];
-        [self startSpellingTimerIfNeeded];
     } else {
         [self handleSessionCompleted];
     }
@@ -210,14 +212,19 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
         
     } else {
         if (self.repetitionCount < self.totalRepetitions) {
-            self.repetitionCount += 1;
-            self.spelledNumberCount = 0;
-            // The timer will fire again and the count will start from 0.
-            // But since it's not invalidated, it will continue.
+            [self invalidateSpellingTimer];
+            [self.delegate gameViewModelDidCompleteRepetition:self];
         } else {
             [self invalidateSpellingTimer];
             // Keep the spelledNumberCount at totalNumberCount to show a full circle.
         }
+    }
+}
+
+- (void)prepareNextRepetition {
+    if (self.repetitionCount < self.totalRepetitions) {
+        self.repetitionCount += 1;
+        self.spelledNumberCount = 0;
     }
 }
 

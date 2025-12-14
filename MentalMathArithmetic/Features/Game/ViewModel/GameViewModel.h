@@ -17,6 +17,7 @@
 
 @protocol GameViewModelDelegate <NSObject>
 - (void)gameViewModel:(GameViewModel *)viewModel didSpellComponent:(GameQuestionComponent *)component;
+- (void)gameViewModelDidCompleteRepetition:(GameViewModel *)viewModel;
 @end
 
 NS_ASSUME_NONNULL_BEGIN
@@ -34,7 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) BOOL isPaused;
 
-- (void)start;
+- (void)prepareNewSession;
+- (void)prepareNextRepetition;
+- (void)beginSpelling;
 - (void)togglePause;
 - (void)checkAnswer:(NSString *)answer;
 - (BOOL)advanceToNextQuestion;

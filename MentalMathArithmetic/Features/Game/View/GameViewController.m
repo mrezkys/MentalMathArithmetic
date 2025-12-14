@@ -262,6 +262,13 @@
             [self updateProgress];
             [self updateSessionProgress];
             [self updateQuestionCard];
+            
+            TimeCounterModalViewController *countdownModal = [[TimeCounterModalViewController alloc] initWithTitle:@"Next Question In..." startingValue:5];
+            __weak typeof(self) weakSelf = self;
+            countdownModal.completionHandler = ^{
+                [weakSelf.viewModel beginSpelling];
+            };
+            [self presentViewController:countdownModal animated:YES completion:nil];
         }
     }
     
@@ -274,11 +281,22 @@
     [super viewDidLoad];
     [self setupDefaultView];
 
-    [self.viewModel start];
+    // Warm up the speech synthesizer to reduce initial delay
+    AVSpeechUtterance *warmupUtterance = [AVSpeechUtterance speechUtteranceWithString:@" "];
+    warmupUtterance.volume = 0.0f;
+    [self.speechSynthesizer speakUtterance:warmupUtterance];
+
+    [self.viewModel prepareNewSession];
     [self updateProgress];
     [self updateSessionProgress];
     [self updateQuestionCard];
-    
+
+    TimeCounterModalViewController *modal = [[TimeCounterModalViewController alloc] initWithTitle:@"Get Ready,\nGame will start in..." startingValue:5];
+    __weak typeof(self) weakSelf = self;
+    modal.completionHandler = ^{
+        [weakSelf.viewModel beginSpelling];
+    };
+    [self presentViewController:modal animated:YES completion:nil];
 }
 
 - (void)setupDefaultView {
@@ -422,10 +440,16 @@
 
     __weak typeof(self) weakSelf = self;
     modal.confirmHandler = ^{
-        [weakSelf.viewModel start];
+        [weakSelf.viewModel prepareNewSession];
         [weakSelf updateProgress];
         [weakSelf updateSessionProgress];
         [weakSelf updateQuestionCard];
+        
+        TimeCounterModalViewController *countdownModal = [[TimeCounterModalViewController alloc] initWithTitle:@"Next Round Starts In..." startingValue:5];
+        countdownModal.completionHandler = ^{
+            [weakSelf.viewModel beginSpelling];
+        };
+        [weakSelf presentViewController:countdownModal animated:YES completion:nil];
     };
 
     [self presentViewController:modal animated:YES completion:nil];
@@ -603,6 +627,18 @@
     utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 1.2;
 
     [self.speechSynthesizer speakUtterance:utterance];
+}
+
+- (void)gameViewModelDidCompleteRepetition:(GameViewModel *)viewModel {
+    [self.viewModel prepareNextRepetition];
+    [self updateProgress];
+    
+    TimeCounterModalViewController *countdownModal = [[TimeCounterModalViewController alloc] initWithTitle:@"Again in..." startingValue:3];
+    __weak typeof(self) weakSelf = self;
+    countdownModal.completionHandler = ^{
+        [weakSelf.viewModel beginSpelling];
+    };
+    [self presentViewController:countdownModal animated:YES completion:nil];
 }
 
 @end
