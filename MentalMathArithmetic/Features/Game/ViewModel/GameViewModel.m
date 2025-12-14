@@ -166,6 +166,7 @@ static const NSTimeInterval GameViewModelSpellingInterval = 1.0;
 }
 
 - (void)prepareCurrentQuestion {
+    _isPaused = NO;
     GameQuestion *question = self.currentSession.currentQuestion;
     if (!question) {
         self.currentQuestionState = nil;

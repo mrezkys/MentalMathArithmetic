@@ -264,6 +264,7 @@ static const float SpeechRate = 0.3f;
             [self updateProgress];
             [self updateSessionProgress];
             [self updateQuestionCard];
+            [self updatePauseUI];
             
             TimeCounterModalViewController *countdownModal = [[TimeCounterModalViewController alloc] initWithTitle:@"Next Question In..." startingValue:5];
             __weak typeof(self) weakSelf = self;
@@ -553,6 +554,7 @@ static const float SpeechRate = 0.3f;
     [self resetProgressAnimation];
     [self showProgressUI];
     self.answerFeedbackView.hidden = YES;
+    self.pauseButton.hidden = NO;
     [self.questionCardView setExpanded:NO animated:YES];
     [self.questionCardView setStatusText:@"Playing 🔊"];
     [self changeAnswerButtonStyleForAdvanced:NO];
@@ -568,6 +570,7 @@ static const float SpeechRate = 0.3f;
 - (void)applyAnsweredQuestionAppearance {
     [self stopProgressAnimation];
     [self expandQuestionBox];
+    self.pauseButton.hidden = YES;
     [self.questionCardView setStatusText:@"Question Revealed"];
     [self changeAnswerButtonStyleForAdvanced:YES];
 }
